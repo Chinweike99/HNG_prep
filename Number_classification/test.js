@@ -1,6 +1,16 @@
 import express from 'express'
+import cors from 'cors'
+import axios from 'axios';
+
+// const express = require("express");
+// const axios = require("axios");
+// const cors = require("cors");
+
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3100;
+
+// Enable CORS
+app.use(cors());
 
 // Helper functions for mathematical properties
 const isPrime = (num) => {
@@ -31,23 +41,25 @@ const digitSum = (num) => {
     .reduce((acc, digit) => acc + Number(digit), 0);
 };
 
-// Hardecoded fun facts
-const funFacts = {
-  371: "371 is an Armstrong number because 3^3 + 7^3 + 1^3 = 371.",
-  7: "7 is considered a lucky number in many cultures.",
-  42: "42 is the answer to the Ultimate Question of Life, the Universe, and Everything.",
-};
-
 // API endpoint
-app.get("/api/number", (req, res) => {
-  const num = parseInt(req.query.num);
+app.get("/api/classify-number", async (req, res) => {
+  const num = parseInt(req.query.number);
 
   // Validate input
   if (isNaN(num)) {
     return res.status(400).json({
-      number: req.query.num,
+      number: req.query.number,
       error: true,
     });
+  }
+
+  // Fetch fun fact from Numbers API
+  let funFact = "No fun fact available for this number.";
+  try {
+    const response = await axios.get(`http://numbersapi.com/${num}/math`);
+    funFact = response.data;
+  } catch (error) {
+    console.error("Error fetching fun fact:", error.message);
   }
 
   // Calculate properties
@@ -58,11 +70,11 @@ app.get("/api/number", (req, res) => {
 
   const response = {
     number: num,
-    prime: isPrime(num),
-    perfect: isPerfect(num),
+    is_prime: isPrime(num),
+    is_perfect: isPerfect(num),
     properties: properties,
     digit_sum: digitSum(num),
-    fun_fact: funFacts[num] || "No fun fact available for this number.",
+    fun_fact: funFact,
   };
 
   res.status(200).json(response);
