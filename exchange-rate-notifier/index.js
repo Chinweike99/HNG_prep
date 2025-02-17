@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import nodemailer from 'nodemailer';
 import cron from 'node-cron'
 
-const API_KEY = process.env.API_KEY;
+const api_key = process.env.API_KEY;
 
-const GMAIL_USER = 'email'
-const GMAIL_PASS = 'gmailpassword'
+const user_gmail = process.env.GMAIL_USER
+const user_password = process.env.GMAIL_PASS
 
 
 const fetchExchangeRates = async () =>{
-    const url = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/NGN`;
+    const url = `https://v6.exchangerate-api.com/v6/${api_key}/latest/NGN`;
     try{
         const response = await fetch(url);
         const data = await response.json();
@@ -34,14 +34,14 @@ const sendMail = async () => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth:{
-            user: GMAIL_USER,
-            pass: GMAIL_PASS
+            user: user_gmail,
+            pass: user_password
         },
     });
 
     const mailOptions = {
-        from: GMAIL_USER,
-        to: GMAIL_USER,
+        from: user_gmail,
+        to: user_gmail,
         subject: "Current exchange rates (NGN to USD, EUR, GBP)",
         text: `Here are the current exchange rates:
         Naira (NGN): ${rates.NGN} 
@@ -67,7 +67,7 @@ const sendMail = async () => {
     }
 
     // Schedule the task to run every 20  minutes
-    cron.schedule('*/20 * * * *', () => {
+    cron.schedule('*/5 * * * *', () => {
         console.log('Fetching exchange rates ...');
         fetchAndSendRates();
     })
