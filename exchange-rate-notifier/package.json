@@ -1,6 +1,7 @@
 {
   "name": "exchange-rate-notifier",
   "packageManager": "yarn@4.6.0",
+  "type": "module",
   "dependencies": {
     "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
