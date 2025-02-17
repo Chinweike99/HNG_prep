@@ -11,7 +11,7 @@ def ping_website(url):
             notify("UP✅", url)
         else:
             notify("DOWN ❌", url, f"(status:{response.status_code})")
-        except requests.RequestException as e:
+    except requests.RequestException as e:
             notify("DOWN ❌", url, f"(Error:{str(e)})")
         
     def monitor_website(website):
