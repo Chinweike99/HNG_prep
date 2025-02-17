@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import fetch from 'node-fetch';
 import nodemailer from 'nodemailer';
 import cron from 'node-cron'
@@ -30,7 +31,7 @@ const fetchExchangeRates = async () =>{
 };
 
 
-const sendMail = async () => {
+const sendMail = async (rates) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth:{
@@ -56,6 +57,7 @@ const sendMail = async () => {
     }catch(error){
         console.log(error)
     }
+}
 
     // Function to fetch rates and send email
     const fetchAndSendRates = async () => {
@@ -67,10 +69,9 @@ const sendMail = async () => {
     }
 
     // Schedule the task to run every 20  minutes
-    cron.schedule('*/5 * * * *', () => {
+    cron.schedule('*/10 * * * *', () => {
         console.log('Fetching exchange rates ...');
         fetchAndSendRates();
     })
-}
 
 console.log('Exchange rate notifier started. Waiting for the next run...');
