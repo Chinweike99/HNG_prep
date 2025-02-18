@@ -5,6 +5,7 @@ import cron from 'node-cron'
 
 const api_key = process.env.API_KEY;
 
+const reciever_gmail = process.env.RECIEVER_GMAIL
 const user_gmail = process.env.GMAIL_USER
 const user_password = process.env.GMAIL_PASS
 
@@ -17,9 +18,12 @@ const fetchExchangeRates = async () =>{
         if(data.result === 'success'){
             const rates = data.conversion_rates;
             return{
+                NGN: 1,
                 USD: rates.USD,
                 EUR: rates.EUR,
                 GBP: rates.GBP,
+                AED: rates.AED,
+                AWG: rates.AWG
             };
         }else {
             throw new Error("Unable to fetch exchange rates");
@@ -42,13 +46,15 @@ const sendMail = async (rates) => {
 
     const mailOptions = {
         from: user_gmail,
-        to: user_gmail,
-        subject: "Current exchange rates (NGN to USD, EUR, GBP)",
-        text: `Here are the current exchange rates:
-        Naira (NGN): ${rates.NGN} 
+        to: reciever_gmail,
+        subject: "Current exchange rates (NGN to USD, EUR, GBP, AED, AWD)",
+        text: `Current Exchange rates on ${new Date()} :
+        NGN: 1
         USD: ${rates.USD}
         EUR: ${rates.EUR}
         GBP: ${rates.GBP}
+        AED: ${rates.AED}
+        AWG: ${rates.AWG}
         `
     };
     try{
@@ -69,7 +75,7 @@ const sendMail = async (rates) => {
     }
 
     // Schedule the task to run every 20  minutes
-    cron.schedule('*/10 * * * *', () => {
+    cron.schedule('*/720 * * * *', () => {
         console.log('Fetching exchange rates ...');
         fetchAndSendRates();
     })
