@@ -71,13 +71,42 @@ const sendMail = async (rates) => {
         if(rates){
             console.log('Fetched exchange rates:', rates);
             await sendMail(rates)
+
+            try {
+                const telexWebHook = "https://ping.telex.im/v1/webhooks/01951d09-6c39-77a0-990c-7da52f8ad219";
+                const telexResponse = await fetch(telexWebHook, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: `Current Exchange rates on ${new Date()} :
+                    NGN: 1
+                    USD: ${rates.USD}
+                    EUR: ${rates.EUR}
+                    GBP: ${rates.GBP}
+                    AED: ${rates.AED}
+                    AWG: ${rates.AWG}`
+                    })
+                });
+                if(!telexResponse.ok){
+                    throw new Error(`Telex notification failed with status: ${telexResponse.status}`)
+                }
+                console.log("Telex notification sent successfully!");
+            } catch (error) {
+                throw new error(error)
+            }
         }
     }
 
-    // Schedule the task to run every 20  minutes
-    cron.schedule('*/720 * * * *', () => {
+    // Schedule the task to run intervally
+    cron.schedule('*/50  * * * *', () => {
         console.log('Fetching exchange rates ...');
         fetchAndSendRates();
     })
 
 console.log('Exchange rate notifier started. Waiting for the next run...');
+
+export { fetchAndSendRates,fetchExchangeRates };
+// export {  };
+
