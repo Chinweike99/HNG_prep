@@ -313,11 +313,6 @@ const checkLanguagePairSupport = async (sourceLanguage, targetLanguage) => {
 
 
 
-
-
-
-
-
       <div className="Textprocessor-container">
       <header>
         <h1>AI Text Processor</h1>

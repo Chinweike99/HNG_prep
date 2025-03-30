@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Ai_textProcessor from './ai_textProcessor'
 import Textprocessor from './Text_processor'
+import TexttProcessor from './Components/TexttProcessor'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -10,7 +11,8 @@ function App() {
     <>
       <div className='font-semibold'>
         {/* <Ai_textProcessor /> */}
-        <Textprocessor />
+        {/* <Textprocessor /> */}
+        <TexttProcessor />
       </div>
     </>
   )
