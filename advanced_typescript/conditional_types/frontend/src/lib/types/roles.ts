@@ -64,3 +64,39 @@ export type RoleGuardedFunction<
 
 
 
+// type BaseUser = {
+//     id: string;
+//     name: string;
+//     email: string;
+//   };
+  
+//   export type UserRole = 'admin' | 'editor' | 'viewer';
+  
+//   export type User<T extends UserRole = UserRole> = BaseUser & {
+//     role: T;
+//   } & (T extends 'admin' ? {
+//       canDelete: true;
+//       canCreate: true;
+//       canEditAll: true;
+//     } : T extends 'editor' ? {
+//       canCreate: true;
+//       canEditOwn: true;
+//     } : {
+//       canComment: true;
+//     });
+  
+//   export type Permissions = {
+//     canCreate: boolean;
+//     canEdit: boolean;
+//     canDelete: boolean;
+//   };
+  
+//   export const getPermissions = <T extends UserRole>(role: T): Permissions => {
+//     return {
+//       canCreate: role === 'admin' || role === 'editor',
+//       canEdit: role === 'admin' || role === 'editor',
+//       canDelete: role === 'admin',
+//     } as Permissions;
+//   };
+
+

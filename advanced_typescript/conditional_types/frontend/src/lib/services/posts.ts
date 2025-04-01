@@ -12,7 +12,7 @@ interface BasePost {
     authorId: string;
 }
 
-type PostStatus = 'draft' | 'published' | 'archived';
+export type PostStatus = 'draft' | 'published' | 'archived';
 
 export type Post<T extends PostStatus = PostStatus> = BasePost &{
     status: T;
@@ -20,11 +20,11 @@ export type Post<T extends PostStatus = PostStatus> = BasePost &{
     scheduledPublish?: Date;
 }: T extends 'published' ? {
     publishedAt: Date;
-    views: number
+    views: number | null;
 }: {});
 
 
-//COnditional type for post creation based on user role
+//Conditional type for post creation based on user role
 export type PostCreationParams<T extends UserRole> = {
     title: string;
     content: string;
