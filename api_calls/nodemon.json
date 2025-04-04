@@ -1,0 +1,7 @@
+{
+    "watch": ["next.config.js", "pages", "src/pages", "app", "src/app", "server.js"],
+    "ext": "js,jsx,ts,tsx,json",
+    "ignore": ["node_modules"],
+    "exec": "next dev"
+  }
+  
