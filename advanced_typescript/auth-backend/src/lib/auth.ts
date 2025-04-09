@@ -1,8 +1,8 @@
 
 import { z } from 'zod'
-import bcrypt from 'bcrypt'
-import { } from 'crypto';
-import { compare, hash  } from 'bcryptjs';
+// import bcrypt from 'bcrypt'
+// import { } from 'crypto';
+import bcrypt, { compare, hash,  } from 'bcryptjs';
 import  jwt  from 'jsonwebtoken';
 import dotenv from 'dotenv'
 import { cookies } from 'next/headers';
@@ -75,14 +75,26 @@ export async function setAuthCookie(token: string): Promise<void> {
     });
 }
 
-export async function getAuthToken(req?: NextRequest): Promise<string | null>{
+export async function getAuthToken(req?: Request | NextRequest): Promise<string | null>{
     if(req){
+
+        const authHeader = req.headers.get('authorization');
+        console.log("Auth header:", req.headers.get('authorization'));
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            return authHeader.split(' ')[1];
+        }
+
+       if('cookies' in req){
         const token = req.cookies.get('authToken')?.value;
+        console.log("Cookie token:", req.cookies.get('authToken')?.value);
+
         return token || null
+       }
     }
     // For server components and API routes
     return (await cookies()).get('authToken')?.value || null
 }
+
 
 
 // Get current user from request
@@ -91,9 +103,19 @@ export async function getCurrentUser(req?: NextRequest) {
     if(!token) return null;
 
     const currentUser = verifyJwtToken(token);
+    console.log("Decoded user:", currentUser);
     if(!currentUser) return  null;
 
     return currentUser
 }
+
+
+// Clear cookie
+export async function clearAuthCookie(): Promise<void> {
+    (await cookies()).delete("authToken")
+}
+
+
+
 
 

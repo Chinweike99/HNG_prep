@@ -7,9 +7,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request){
     try {
-        const body = req.json();
+        const body = await req.json();
+        console.log("Login payload:", body);
         const validateResult = loginSchema.safeParse(body);
         if(!validateResult.success){
+            console.error(validateResult.error.format()); 
             return NextResponse.json(
                 {error: validateResult.error.errors[0].message },
                 {status: 400}
@@ -17,7 +19,7 @@ export async function POST(req: Request){
         }
 
         const {email, password} = validateResult.data;
-        const user = await prisma.user.findUnique({where: {email}});
+        const user = await prisma.user.findUnique({where: {email},});
 
         if(!user) return NextResponse.json({error: "Invalid email or password"}, {status: 401});
 
@@ -29,6 +31,8 @@ export async function POST(req: Request){
                 {status: 401}
             )
         }
+
+        
 
         // Create JWT Token
         const token = signJwtToken({
@@ -44,7 +48,8 @@ export async function POST(req: Request){
             id: user.id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role: user.role,
+            token: token
         })
 
 
