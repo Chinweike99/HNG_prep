@@ -12,6 +12,8 @@
 node_modules
 .next
 .env
+seed.ts
+prisma
 # testing
 /coverage
 

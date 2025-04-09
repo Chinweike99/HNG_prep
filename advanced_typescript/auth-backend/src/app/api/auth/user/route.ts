@@ -1,18 +1,18 @@
 import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(){
+export async function GET(req: NextRequest){
     try {
-        const userData = await getCurrentUser();
+        const userData = await getCurrentUser(req);
         if(!userData){
             return NextResponse.json(
                 {error: "NOT AUTHENTICATED"},
                 {status: 401}
             )
         }
-
+ 
         // Get fresh user Data
         const user = await prisma.user.findUnique({
             where: {id: userData.id },

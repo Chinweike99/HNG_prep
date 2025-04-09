@@ -38,7 +38,8 @@ export async function POST(req: Request){
         const token = signJwtToken({
             id: user.id,
             email: user.email,
-            password: user.password
+            password: user.password,
+            role: user.role
         })
 
         // Store in cookie (Set Cookie)

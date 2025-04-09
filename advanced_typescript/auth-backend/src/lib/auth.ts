@@ -58,7 +58,8 @@ export function  verifyJwtToken(token: string) : any {
     try {
         return jwt.verify(token, process.env.JWT_SECRET!)
     } catch (error) {
-        console.error(error)
+        console.error("Token verification error:", error);
+        return null;  // Return null instead of undefined
     }
 }
 
@@ -100,6 +101,8 @@ export async function getAuthToken(req?: Request | NextRequest): Promise<string 
 // Get current user from request
 export async function getCurrentUser(req?: NextRequest) {
     const token = await getAuthToken(req);
+    console.log("Token received:", token ? token.substring(0, 15) + "..." : "null");
+
     if(!token) return null;
 
     const currentUser = verifyJwtToken(token);

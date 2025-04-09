@@ -23,8 +23,8 @@ model User {
     name      String?
     password  String
     role      Role     @default(USER)
-    createdAT DateTime @default(now())
-    updatedAT DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime? @updatedAt
     posts     Post[]
 }
 
@@ -36,6 +36,6 @@ model Post {
     authorId  String
     author    User     @relation(fields: [authorId], references: [id])
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime? @updatedAt
 }
 
