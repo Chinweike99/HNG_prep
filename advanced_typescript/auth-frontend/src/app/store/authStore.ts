@@ -1,5 +1,9 @@
 import { create } from "zustand";
 
+
+// Make sure this points to your API server
+const api_url = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+
 export type User = {
     id: string;
     name: string;
@@ -41,7 +45,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     login: async (email, password) => {
         try {
             set({isLoading: true, error: null});
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(`${api_url}/api/auth/login`, {
                 method: 'POST',
                 headers: {"Content-Type": 'application/json'},
                 body: JSON.stringify({email, password})
@@ -65,9 +69,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     register: async (name, email, password) => {
         try {
             set({isLoading: true, error: null});
-            const response = await fetch('/api/auth/register', {
+            const response = await fetch(`${api_url}/api/auth/register`, {
                 method: 'POST',
                 headers: {"Content-Type": 'application/json'},
+                credentials: 'include',
                 body: JSON.stringify({name, email, password})
             })
             const data = await response .json();
@@ -89,7 +94,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     logout: async() => {
         try {
             set({isLoading: true});
-            const response = await fetch('/api/auth/logout', {
+            const response = await fetch(`${api_url}/api/auth/logout`, {
                 method: 'POST',
             })
 
@@ -110,7 +115,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     checkAuth: async()=>{
         try {
             set({isLoading: true});
-            const checkAuthuorization = await fetch('/api/auth/check-auth');
+            const checkAuthuorization = await fetch(`${api_url}/api/auth/check-auth`);
 
             if(!checkAuthuorization.ok){
                 set({user: null, isAuthenticated: false, isLoading: false});

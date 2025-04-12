@@ -1,9 +1,11 @@
+'use client';
+
 // Authentication Hooks with TanStack Query
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { useAuthStore } from "../store/authStore";
-import { string } from "zod";
+import { useRouter } from "next/navigation";
+// import { string } from "zod";
 
 export function useAuth() {
   const router = useRouter();
