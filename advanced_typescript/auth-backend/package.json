@@ -10,13 +10,14 @@
     "lint": "next lint"
   },
   "prisma": {
-  "seed": "node --loader ts-node/esm prisma/seed.ts"
-},
+    "seed": "node --loader ts-node/esm prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "@tanstack/react-query": "^5.72.0",
     "bcryptjs": "^3.0.2",
     "cookie": "^1.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
     "next": "15.2.4",
@@ -37,6 +38,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "http-proxy-middleware": "^3.0.5",
     "prisma": "^6.5.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
